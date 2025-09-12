@@ -9,6 +9,15 @@ function buscarUsuarios($db){
     return $resultado = $statment->fetchAll();
 }
 
+function buscarUsuarioPorId($db, $id){
+    $sql = 'SELECT id_usuario, nome_usuario, email_usuario
+    FROM tbl_usuario
+    WHERE id_usuario = :id';
+    $statment = $db->prepare($sql);
+    $statment -> bindParam(':id', $id);
+    return $resultado = $statment -> execute();
+}
+
 function registrarUsuario($db, $nome, $email, $senha){
     $sql = 'INSERT INTO tbl_usuario (nome_usuario, email_usuario, senha_usuario)
     VALUES (:nome, :email, :senha)';
@@ -18,7 +27,3 @@ function registrarUsuario($db, $nome, $email, $senha){
     $statment -> bindParam(':email', $email);
     return $statment -> execute();
 }
-
-// $resultado = buscarUsuarios($db);
-
-// var_dump($resultado);
