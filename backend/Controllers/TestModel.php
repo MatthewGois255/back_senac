@@ -1,12 +1,13 @@
 <?php
-require_once 'C:/xampp/htdocs/kipedreiro/backend/Models/Contato.php';
+require_once 'C:/xampp/htdocs/kipedreiro/backend/Models/Endereco.php';
 require_once __DIR__.'/../Database/Database.php';
 
-$usuario = new Contato($db);
+$usuario = new Endereco($db);
 
-// $resultado = $usuario->buscarContatos();
-// $resultado = $usuario->buscarContatosPorEmail("juliana.a@emailaleatorio.com");
-// $resultado = $usuario->inserirContato("Jão", "12345", "emaildojao@gmail.com");
-// $resultado = $usuario->atualizarContato(27, "Jão", "54321", "emaildojao@gmail.com");
-// $resultado = $usuario->excluirContato(27);
+$resultado = $usuario->buscarEnderecos();
+// $resultado = $usuario->buscarEnderecosPorId(6);
+// $resultado = $usuario->inserirEndereco('DryWall', 'Montagem e desmontagem de DryWalls');
+// $resultado = $usuario->atualizarEndereco(21, 'DryWall', 'Agora só fazemos montagens');
+// $resultado = $usuario->excluirEndereco(21);
+
 var_dump($resultado);
