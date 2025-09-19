@@ -2,7 +2,7 @@
 
 include_once __DIR__.'/../Database/Database.php';
 
-class Endereco {
+class Pagamento {
     
     private $db;
 
@@ -10,17 +10,17 @@ class Endereco {
         $this->db = $db;
     }
 
-    public function buscarEnderecos(){
+    public function buscarPagamentos(){
         $sql = 'SELECT *
-        FROM tbl_endereco';
+        FROM tbl_pagamento';
         $statment = $this->db->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $statment -> execute();
         return $statment->fetchAll();
     }
 
-    public function buscarEnderecosPorId($id){
-        $sql = "SELECT * FROM tbl_endereco
-        WHERE id_endereco =
+    public function buscarPagamentosPorId($id){
+        $sql = "SELECT * FROM tbl_pagamento
+        WHERE id_pagamento =
         :id AND excluido_em IS NULL";
 
         $stmt = $this->db->prepare($sql);
@@ -29,26 +29,22 @@ class Endereco {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    function inserirEndereco($logradouro, $numero, $cidade, $usuario){
-        $sql = "INSERT INTO tbl_endereco (
-        logradouro_endereco,
-        numero_endereco,
-        cidade_endereco,
-        id_usuario
+    function inserirPagamento($cliente, $total_devedor, $status){
+        $sql = "INSERT INTO tbl_pagamento (
+        id_cliente,
+        total_devedor,
+        status_pagamento
         )
         VALUES (
-        :logradouro,
-        :numero,
-        :cidade,
-        :usuario
+        :cliente,
+        :total_devedor,
+        :status        
         )";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':logradouro', $logradouro);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':cidade', $cidade);
-        $stmt->bindParam(':usuario', $usuario);
-
+        $stmt->bindParam(':cliente', $cliente);
+        $stmt->bindParam(':total_devedor', $total_devedor);
+        $stmt->bindParam(':status', $status);
         if($stmt->execute()){
             return $this->db->lastInsertId();
         }
@@ -57,26 +53,22 @@ class Endereco {
         }
     }
 
-    // parei aqui
-
-    function atualizarEndereco($id, $logradouro, $numero, $cidade, $usuario){
+    function atualizarPagamento($id, $cliente, $total_devedor, $status){
         $dataAtual = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE tbl_endereco SET
-        logradouro_endereco = :logradouro,
-        numero_endereco = :numero,
-        cidade_endereco = :cidade,
-        id_usuario = :usuario,
+        $sql = "UPDATE tbl_pagamento SET
+        id_cliente = :cliente,
+        total_devedor = :total_devedor,
+        status_pagamento = :status,
         atualizado_em = :atual
-        where id_endereco = :id";
+        where id_pagamento = :id";
 
         $stmt = $this->db->prepare($sql);
         
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':logradouro', $logradouro);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':cidade', $cidade);
-        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':cliente', $cliente);
+        $stmt->bindParam(':total_devedor', $total_devedor);
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':atual', $dataAtual);
 
         if($stmt->execute()){
@@ -87,12 +79,12 @@ class Endereco {
         }
     }
 
-    function excluirEndereco($id){
+    function excluirPagamento($id){
         $dataAtual = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE tbl_endereco SET
+        $sql = "UPDATE tbl_pagamento SET
         excluido_em = :atual
-        where id_endereco = :id";
+        where id_pagamento = :id";
 
         $stmt = $this->db->prepare($sql);
         

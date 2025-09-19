@@ -1,13 +1,31 @@
 <?php
 require_once 'C:/xampp/htdocs/kipedreiro/backend/Models/Endereco.php';
+require_once 'C:/xampp/htdocs/kipedreiro/backend/Models/Usuario.php';
 require_once __DIR__.'/../Database/Database.php';
 
-$usuario = new Endereco($db);
+$usuario = new Usuario($db);
+$endereco = new Endereco($db);
 
-$resultado = $usuario->buscarEnderecos();
-// $resultado = $usuario->buscarEnderecosPorId(6);
-// $resultado = $usuario->inserirEndereco('DryWall', 'Montagem e desmontagem de DryWalls');
-// $resultado = $usuario->atualizarEndereco(21, 'DryWall', 'Agora só fazemos montagens');
-// $resultado = $usuario->excluirEndereco(21);
+$id = $usuario->inserirUsuario(
+    'Matheus',
+    'emaildomatheus@gmail.com',
+    '9876',
+    'Cliente',
+    'Ativo'
+);
 
-var_dump($resultado);
+$address = $endereco->inserirEndereco(
+    'Aquela rua lá',
+    0,
+    'Campinas',
+    $id
+);
+
+if($address) {
+    echo "Deu bom fiote";
+}
+else {
+    echo 'vish, moiô paizão';
+}
+
+var_dump($usuario->buscarUsuariosInativos());

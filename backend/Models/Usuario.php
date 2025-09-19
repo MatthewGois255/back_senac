@@ -17,6 +17,27 @@ class Usuario {
         $statment -> execute();
         return $statment->fetchAll();
     }
+    
+    function buscarUsuariosInativos(){
+        $sql = 
+        'SELECT * FROM tbl_usuario WHERE excluido_em IS NOT NULL';
+        $stmt = $this->db->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    function buscarUsuariosInativosPorId($id){
+        $sql =
+        "SELECT * FROM tbl_usuario WHERE id_usuario = :id AND excluido_em IS NOT NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    // function reativarUsuario($id){
+    //  
+    // }
 
     public function buscarUsuariosPorEmail($email){
         $sql = "select * from tbl_usuario where email_usuario = :email and excluido_em is null";
